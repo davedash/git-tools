@@ -16,6 +16,7 @@ url = ('https://api-dev.bugzilla.mozilla.org/latest/bug/' +  BUG +
 JSON = urllib.urlopen(url).read()
 TITLE = json.loads(JSON)['summary']
 parts = [BUG] + re.split(r"""[ -:,\'\"]+""", TITLE.lower())
+parts = [part for part in parts if not ('[' in part or ']' in part)]
 SLUG = '-'.join(parts[:4])
 
 call("git co -b %s" % SLUG, shell=True)
